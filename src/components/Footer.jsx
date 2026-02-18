@@ -1,30 +1,15 @@
+
 import React from "react";
 
-const Footer = () => {
+function Footer() {
   return (
-    <footer style={{
-      background: "#222",
-      color: "#fff",
-      textAlign: "center",
-      padding: "1rem 0",
-      position: "fixed",
-      left: 0,
-      bottom: 0,
-      width: "100%"
-    }}>
-      <span>© {new Date().getFullYear()} Food Delivery App</span>
-      <span style={{ marginLeft: 16 }}>
-        <a
-          href="https://github.com/Ishitatiwari06/Food-Delivery-Frontend"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ color: "#fff", textDecoration: "underline" }}
-        >
-          GitHub
-        </a>
-      </span>
+    <footer className="bg-gray-900 text-white py-8 border-t border-gray-800 mt-8">
+      <div className="container mx-auto px-4 flex flex-col items-center">
+        <h1 className="text-2xl font-extrabold tracking-tight">FoodieExpress</h1>
+        <p className="text-xs text-gray-400 mt-1">© 2026 FoodieExpress. All rights reserved.</p>
+      </div>
     </footer>
   );
-};
+}
 
 export default Footer;
