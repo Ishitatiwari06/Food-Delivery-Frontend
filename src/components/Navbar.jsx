@@ -1,17 +1,27 @@
+import { Link } from "react-router-dom";
+
 function Navbar() {
   return (
     <nav className="bg-gray-900 shadow-md px-6 py-4 flex justify-between items-center">
       {/* Logo */}
-      <h1 className="text-xl font-bold text-white">
+      <Link to="/" className="text-xl font-bold text-white">
         Foodie
-      </h1>
+      </Link>
 
       {/* Links */}
       <ul className="hidden md:flex gap-8 text-gray-300 font-medium">
-        <li className="hover:text-white cursor-pointer">Home</li>
-        <li className="hover:text-white cursor-pointer">Menu</li>
-        <li className="hover:text-white cursor-pointer">About</li>
-        <li className="hover:text-white cursor-pointer">Contact</li>
+        <li>
+          <Link to="/" className="hover:text-white transition-colors">Home</Link>
+        </li>
+        <li>
+          <Link to="/menu" className="hover:text-white transition-colors">Menu</Link>
+        </li>
+        <li>
+          <Link to="/about" className="hover:text-white transition-colors">About</Link>
+        </li>
+        <li>
+          <Link to="/contact" className="hover:text-white transition-colors">Contact</Link>
+        </li>
       </ul>
 
       {/* Buttons */}
