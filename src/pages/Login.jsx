@@ -10,13 +10,14 @@ export default function Login() {
     rememberMe: false,
   });
   const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState("");
   const handleChange = (e) => {
     setCredentials({
       ...credentials,
       [e.target.name]: e.target.value,
     });
   };
-const handleChange2 = (e) => {
+  const handleChange2 = (e) => {
     setCredentials({
       ...credentials,
       rememberMe: e.target.checked,
@@ -24,22 +25,27 @@ const handleChange2 = (e) => {
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMsg("");
     try {
       const response = await loginUser(credentials);
       console.log(response);
       navigate("/");
     } catch (error) {
       console.error(error);
+      setErrorMsg("Login failed. Please check your credentials and try again.");
     }
   };
 
     return (
         <div>
-            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-                <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                    Sign in to your account
-                </h2>
-                <form className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm" onSubmit={handleSubmit}>
+          <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+              Sign in to your account
+            </h2>
+            {errorMsg && (
+              <div className="mb-4 text-red-600 text-center font-semibold">{errorMsg}</div>
+            )}
+            <form className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm" onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                     Email address
