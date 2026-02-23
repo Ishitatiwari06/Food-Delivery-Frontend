@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 
-const Carousel = () => {
+const Carousel = ({ search, setSearch }) => {
   const slides = [
   "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38",
   "https://images.unsplash.com/photo-1600891964599-f61ba0e24092",
@@ -29,11 +29,13 @@ const Carousel = () => {
   };
 
   return (
-    <div className="relative w-full h-[400px] overflow-hidden rounded-xl shadow-lg group">
+    <div className="relative w-full h-[400px] overflow-hidden rounded-2xl shadow-2xl group">
       {/* Search Bar Overlay */}
       <form className="absolute top-8 left-1/2 -translate-x-1/2 z-30 w-3/4 max-w-xl flex" onSubmit={e => e.preventDefault()}>
         <input
           type="text"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
           placeholder="Search for food items..."
           className="flex-1 px-4 py-2 rounded-l-lg border-t border-b border-l border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white bg-opacity-90 text-gray-800 shadow"
         />
