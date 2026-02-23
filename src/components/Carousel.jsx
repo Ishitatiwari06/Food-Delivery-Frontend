@@ -31,20 +31,39 @@ const Carousel = ({ search, setSearch }) => {
   return (
     <div className="relative w-full h-[400px] overflow-hidden rounded-2xl shadow-2xl group">
       {/* Search Bar Overlay */}
-      <form className="absolute top-8 left-1/2 -translate-x-1/2 z-30 w-3/4 max-w-xl flex" onSubmit={e => e.preventDefault()}>
-        <input
-          type="text"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          placeholder="Search for food items..."
-          className="flex-1 px-4 py-2 rounded-l-lg border-t border-b border-l border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white bg-opacity-90 text-gray-800 shadow"
-        />
-        <button
-          type="submit"
-          className="px-5 py-2 bg-orange-500 text-white font-semibold rounded-r-lg border-t border-b border-r border-orange-500 hover:bg-orange-600 transition"
-        >
-          Search
-        </button>
+      <form
+        className="absolute top-8 left-1/2 -translate-x-1/2 z-30 w-3/4 max-w-xl flex"
+        onSubmit={e => e.preventDefault()}
+        autoComplete="off"
+      >
+        <div className="relative w-full flex rounded-full overflow-hidden bg-white bg-opacity-90 border border-gray-300 shadow">
+          <input
+            type="text"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                setSearch(e.target.value);
+              }
+            }}
+            placeholder="Search for food items..."
+            className="flex-1 px-4 py-2 bg-transparent text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-400 pr-10 rounded-full"
+          />
+          {search && (
+            <button
+              type="button"
+              onClick={() => setSearch("")}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 focus:outline-none"
+              tabIndex={-1}
+              aria-label="Clear search"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
       </form>
 
       {slides.map((slide, idx) => (

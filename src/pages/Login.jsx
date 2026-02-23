@@ -22,6 +22,7 @@ export default function Login() {
     try {
       const response = await loginUser(credentials);
       localStorage.setItem("token", response.token);
+      localStorage.setItem("name", response.user.name);
       console.log(response);
       navigate("/");
     } catch (error) {
@@ -77,14 +78,6 @@ export default function Login() {
                     />
                     </div>
                 </div>
-
-                {/* <div className="flex items-center justify-between">
-                  <div className="text-sm">
-                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Forgot password?
-                    </a>
-                  </div>
-                </div> */}
                 <div className="mt-6">
                     <button
                     type="submit"
