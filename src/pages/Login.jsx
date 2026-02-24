@@ -10,6 +10,7 @@ export default function Login() {
   });
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
   const handleChange = (e) => {
     setCredentials({
       ...credentials,
@@ -19,6 +20,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
+    setLoginLoading(true);
     try {
       const response = await loginUser(credentials);
       localStorage.setItem("token", response.token);
@@ -28,6 +30,8 @@ export default function Login() {
     } catch (error) {
       console.error(error);
       setErrorMsg("Login failed. Please check your credentials and try again.");
+    } finally {
+      setLoginLoading(false);
     }
   };
 
@@ -79,12 +83,13 @@ export default function Login() {
                     </div>
                 </div>
                 <div className="mt-6">
-                    <button
-                    type="submit"
-                    className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                    Sign in
-                    </button>
+                  <button
+                  type="submit"
+                  className={`flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loginLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  disabled={loginLoading}
+                  >
+                  {loginLoading ? 'Signing in...' : 'Sign in'}
+                  </button>
                 </div>
                 </form>
                 <p className="mt-10 text-center text-sm text-gray-500">
