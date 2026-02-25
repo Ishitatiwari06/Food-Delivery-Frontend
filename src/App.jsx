@@ -5,9 +5,11 @@ import Home from "./pages/Home.jsx";
 import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { CartProvider } from "./context/ContextReducer.jsx";
 
 function App() {
   return (
+      <CartProvider>
     <Router>
       <div className="flex flex-col min-h-screen">
         <Navbar />
@@ -17,12 +19,12 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
 
-            {/* Add more routes here as you create more pages */}
           </Routes>
         </main>
         <Footer />
       </div>
     </Router>
+    </CartProvider>
   );
 }
 
