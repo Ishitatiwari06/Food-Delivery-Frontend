@@ -44,10 +44,15 @@ export const verifyOtp = async (email, otp) => {
   return response.data;
 };
 
-export const checkout = async (orderData) => {
-  const response = await axiosInstance.post("/orderData", {
-    order_data: orderData,
-    order_date: new Date().toDateString()
-  });
+export const createRazorpayOrder = async () => {
+  const response = await axiosInstance.post("/payment/create-order");
+  return response.data;
+};
+
+export const verifyPayment = async (paymentData) => {
+  const response = await axiosInstance.post(
+    "/payment/verify",
+    paymentData
+  );
   return response.data;
 };
