@@ -14,16 +14,13 @@ export default function Card(props) {
       alert("Please login to add items to your cart.");
       return;
     }
-    await dispatch({
-      type: "ADD_ITEM",
-      payload: {
-        foodItem: props._id,
-        name: props.name,
-        price: finalPrice,
-        qty: qty,
-        size: size,
-        img: props.img
-      }
+    await dispatch.addItem({
+      foodItem: props._id,
+      name: props.name,
+      price: finalPrice,
+      qty: qty,
+      size: size,
+      img: props.img
     });
   } 
   let finalPrice = qty * parseInt(options[size]);

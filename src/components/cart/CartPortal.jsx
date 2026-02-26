@@ -1,13 +1,31 @@
 import { createPortal } from "react-dom";
 import { useCart, useDispatchCart } from "../../context/ContextReducer.jsx";
 import CartItem from "./CartItem.jsx";
-
+import { checkout } from "../../services/authService.js";
 
 const CartPortal = ({ isOpen, onClose }) => {
   const cart = useCart();
-
+  const dispatch = useDispatchCart();
   if (!isOpen) return null;
-
+  const handleCheckout = async () => {
+    if (!localStorage.getItem("token")) {
+      alert("Please login to proceed to checkout.");
+      return;
+    }
+    if (!cart || cart.length === 0) {
+      alert("Your cart is empty.");
+      return;
+    }
+    const orderData = cart.map(({ qty, ...item }) => ({ ...item, quantity: qty }));
+    try {
+      await checkout(orderData);
+      await dispatch.clearCart();
+      alert("Order placed successfully!");
+      onClose();
+    } catch (error) {
+      alert("Failed to place order. Please try again.");
+    }
+  };
   const totalPrice = cart.reduce((total, item) => total + (item.price * item.qty), 0);
 
   return createPortal(
@@ -37,7 +55,7 @@ const CartPortal = ({ isOpen, onClose }) => {
           </h3>
           <button
             className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200 font-semibold tracking-wide"
-          >
+          onClick={handleCheckout}>
             Checkout
           </button>
         </div>
