@@ -19,7 +19,7 @@ const CartItem = ({ item }) => {
       <div className="flex flex-col items-end">
         <p className="font-semibold text-green-700">₹{item.price * item.qty}</p>
         <button
-          onClick={() => dispatch({ type: "REMOVE_ITEM", payload: { foodItem: item.foodItem, size: item.size } })}
+          onClick={() => dispatch.removeItem({ foodItem: item.foodItem, size: item.size })}
           className="text-sm text-red-500 hover:underline mt-1"
         >
           <img src="https://i.pinimg.com/736x/b8/04/8e/b8048e4207a717d387630dc7dea9dc54.jpg" alt="delete" className="w-5 h-5" />
