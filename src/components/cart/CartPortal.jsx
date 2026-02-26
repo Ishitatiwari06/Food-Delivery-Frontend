@@ -1,31 +1,44 @@
+
 import { createPortal } from "react-dom";
 import { useCart, useDispatchCart } from "../../context/ContextReducer.jsx";
 import CartItem from "./CartItem.jsx";
-import { checkout } from "../../services/authService.js";
+import { createRazorpayOrder, verifyPayment } from "../../services/authService.js";
+import { useNavigate } from "react-router-dom";
+
 
 const CartPortal = ({ isOpen, onClose }) => {
   const cart = useCart();
   const dispatch = useDispatchCart();
+  const navigate = useNavigate();
   if (!isOpen) return null;
-  const handleCheckout = async () => {
-    if (!localStorage.getItem("token")) {
-      alert("Please login to proceed to checkout.");
-      return;
-    }
-    if (!cart || cart.length === 0) {
-      alert("Your cart is empty.");
-      return;
-    }
-    const orderData = cart.map(({ qty, ...item }) => ({ ...item, quantity: qty }));
-    try {
-      await checkout(orderData);
-      await dispatch.clearCart();
-      alert("Order placed successfully!");
-      onClose();
-    } catch (error) {
-      alert("Failed to place order. Please try again.");
-    }
-  };
+
+  const handlePayment = async () => {
+    const response = await createRazorpayOrder({
+      amount: totalPrice * 100,
+      currency: "INR",
+    });
+    const { order } = response;
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      name: "Food Delivery",
+      order_id: order.id,
+      handler: async (response) => {
+        const data = {
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_signature: response.razorpay_signature,
+        };
+        await verifyPayment(data);
+        await dispatch.clearCart();
+        navigate("/myorders");
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+};
   const totalPrice = cart.reduce((total, item) => total + (item.price * item.qty), 0);
 
   return createPortal(
@@ -54,9 +67,10 @@ const CartPortal = ({ isOpen, onClose }) => {
             Total: ₹{totalPrice}
           </h3>
           <button
-            className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200 font-semibold tracking-wide"
-          onClick={handleCheckout}>
-            Checkout
+            onClick={handlePayment}
+            className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-4 py-3 rounded-lg shadow-md transition-all duration-200 font-semibold text-lg tracking-wide mt-2"
+          >
+            Pay Now
           </button>
         </div>
       </div>
