@@ -36,7 +36,7 @@ function Navbar() {
         <ul className="hidden md:flex gap-8 text-white font-semibold text-lg">
           {localStorage.getItem("token") ? (
             <li>
-              <Link to="/myorders" className="hover:text-yellow-200 transition-colors">My Orders</Link>
+              <Link to="/myorder" className="hover:text-yellow-200 transition-colors">My Orders</Link>
             </li>
           ) : null}
         </ul>
