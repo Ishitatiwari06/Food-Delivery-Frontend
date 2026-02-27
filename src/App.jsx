@@ -1,18 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
+import Home from "./pages/Home.jsx";
+import Signup from "./pages/Signup.jsx";
+import Login from "./pages/Login.jsx";
+import MyOrder from "./pages/MyOrder.jsx";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { CartProvider } from "./context/ContextReducer.jsx";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="bg-gray-900 h-screen flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-orange-500">
-        Tailwind v4 Working 🚀
-      </h1>
-    </div>
-  )
+      <CartProvider>
+    <Router>
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/myorder" element={<MyOrder />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
+    </CartProvider>
+  );
 }
 
-export default App
+export default App;
