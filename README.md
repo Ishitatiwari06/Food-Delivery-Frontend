@@ -111,8 +111,3 @@ Address management
 Reviews & ratings
 
 Real-time order updates
-
-👨‍💻 Author
-
-Your Name
-Full Stack Developer
