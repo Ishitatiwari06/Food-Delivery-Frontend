@@ -8,12 +8,7 @@ function Home() {
   const [search, setSearch] = useState("");
   const loadData = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/foodData`,{
-        method:"POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/foodData`);
       const data = await response.json();
       setFoodItems(data[0] || []);
       setFoodCategory(data[1] || []);
