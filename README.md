@@ -5,7 +5,7 @@ A modern food delivery web application built using React (Vite) with dynamic car
 ## 🚀 Live Demo
 
 ### 🔗 Deployed on Vercel:
-[https://your-project-name.vercel.app](https://food-delivery-frontend-rho-pink.vercel.app/)
+(https://food-delivery-frontend-rho-pink.vercel.app/)
 
 ## 🛠 Tech Stack
 
