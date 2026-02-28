@@ -82,52 +82,11 @@ Total amount
 
 Order status
 
-## 📁 Project Structure
-src/
-│
-├── api/            # API calls (axios configuration)
-├── components/     # Reusable components
-├── context/        # Cart & Auth context
-├── pages/          # Page components (Home, Cart, Orders)
-├── routes/         # Protected routes logic
-└── App.jsx
-## ⚙️ Environment Variables
-
-Create a .env file in the root directory:
-
-VITE_API_URL=[https://your-backend-url.onrender.com/api](https://food-delivery-backend-p8gs.onrender.com)
-VITE_RAZORPAY_KEY=rzp_test_SJwaOM7vJufiUI
-## 🖥 Installation & Setup
-
-Clone the repository:
-
-git clone [https://github.com/your-username/your-repo.git](https://github.com/Ishitatiwari06/Food-Delivery-Frontend)
-cd frontend
-
-Install dependencies:
-
-npm install
-
-Run locally:
-
-npm run dev
-
-Build for production:
-
-npm run build
 ## 🌍 Deployment
 
 Frontend is deployed on:
 
 Vercel
-
-Steps:
-
-Connect GitHub repo to Vercel
-
-Add environment variables
-
-Deploy
 
 ## 🔒 Security Practices
 
