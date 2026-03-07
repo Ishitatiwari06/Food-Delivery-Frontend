@@ -33,7 +33,6 @@ function Home() {
       <div className="w-full max-w-5xl">
         {foodCategory.length > 0 ? (
           (() => {
-            // Filter categories to only those with matching items
             const categoriesWithMatches = foodCategory.map((category) => {
               const filteredItems = foodItems.filter(
                 (item) =>
