@@ -3,14 +3,16 @@ import { useState } from "react";
 import { useCart } from "../context/ContextReducer.jsx";
 import CartPortal from "../components/cart/CartPortal";
 
+
 function Navbar() {
   const [cartView, setCartView] = useState(false);
   const userName = localStorage.getItem("name");
   const navigate = useNavigate();
+  const cart = useCart();
 
   const handleLogout = () => {
-    localStorage.removeItem("token")
-    localStorage.removeItem("name")
+    localStorage.removeItem("token");
+    localStorage.removeItem("name");
     navigate("/login");
   };
 
@@ -57,7 +59,7 @@ function Navbar() {
           <div className="flex gap-4">
             <button className="px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition font-semibold shadow" onClick={() => setCartView(true)}>
               🛒 MyCart
-              <span className="ml-2 bg-white text-pink-600 px-2 py-1 rounded-full">{useCart().length}</span>
+              <span className="ml-2 bg-white text-pink-600 px-2 py-1 rounded-full">{cart.length}</span>
             </button>
             {cartView && <CartPortal isOpen={cartView} onClose={() => setCartView(false)} />}
             <button onClick={handleLogout} className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition font-semibold shadow">
