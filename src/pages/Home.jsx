@@ -6,20 +6,36 @@ function Home() {
   const [foodItems, setFoodItems] = useState([]);
   const [foodCategory, setFoodCategory] = useState([]);
   const [search, setSearch] = useState("");
-  const loadData = async () => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/foodData`);
-      const data = await response.json();
-      setFoodItems(data[0] || []);
-      setFoodCategory(data[1] || []);
-    } catch (error) {
-        console.error("Error fetching food data:", error.message);
-      }
-  }
-  useEffect(() => {
-    loadData();
-  }, []);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(9); // Items per page
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
 
+  const loadData = async (pageNum = 1) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/foodData?page=${pageNum}&limit=${limit}`);
+      const data = await response.json();
+      setFoodItems(data.foodItems || []);
+      setFoodCategory(data.foodCategory || []);
+      setTotal(data.total || 0);
+    } catch (error) {
+      console.error("Error fetching food data:", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadData(page);
+    // eslint-disable-next-line
+  }, [page]);
+
+
+  // Pagination controls
+  const totalPages = Math.ceil(total / limit);
+  const handlePrev = () => setPage((p) => Math.max(1, p - 1));
+  const handleNext = () => setPage((p) => Math.min(totalPages, p + 1));
 
   return (
     <main className="min-h-screen p-6 flex flex-col items-center bg-gradient-to-br from-yellow-50 via-orange-100 to-pink-100">
@@ -31,7 +47,9 @@ function Home() {
         </div>
       </div>
       <div className="w-full max-w-5xl">
-        {foodCategory.length > 0 ? (
+        {loading ? (
+          <div className="text-center text-gray-400 py-12">Loading...</div>
+        ) : foodCategory.length > 0 ? (
           (() => {
             const categoriesWithMatches = foodCategory.map((category) => {
               const filteredItems = foodItems.filter(
@@ -46,22 +64,40 @@ function Home() {
               return <div className="text-gray-500 italic text-center py-12">No such data found</div>;
             }
 
-            return categoriesWithMatches.map((category) => (
-              <section key={category._id} className="mb-12">
-                <h2 className="text-2xl font-bold text-pink-700 mb-2 flex items-center gap-2">
-                  <span className="inline-block w-2 h-6 bg-orange-400 rounded-full"></span>
-                  {category.CategoryName}
-                </h2>
-                <hr className="mb-6 border-pink-200" />
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                  {category.filteredItems.map(filterItems => (
-                    <div key={filterItems._id} className="">
-                      <Card {...filterItems} />
-                    </div>
+            return <>
+              {categoriesWithMatches.map((category) => (
+                <section key={category._id} className="mb-12">
+                  <h2 className="text-2xl font-bold text-pink-700 mb-2 flex items-center gap-2">
+                    <span className="inline-block w-2 h-6 bg-orange-400 rounded-full"></span>
+                    {category.CategoryName}
+                  </h2>
+                  <hr className="mb-6 border-pink-200" />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    {category.filteredItems.map(filterItems => (
+                      <div key={filterItems._id} className="">
+                        <Card {...filterItems} />
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              ))}
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-2 my-8">
+                  <button onClick={handlePrev} disabled={page === 1} className="px-3 py-1 rounded bg-orange-200 text-orange-700 disabled:opacity-50">Prev</button>
+                  {[...Array(totalPages)].map((_, idx) => (
+                    <button
+                      key={idx + 1}
+                      onClick={() => setPage(idx + 1)}
+                      className={`px-3 py-1 rounded ${page === idx + 1 ? 'bg-orange-500 text-white' : 'bg-orange-100 text-orange-700'}`}
+                    >
+                      {idx + 1}
+                    </button>
                   ))}
+                  <button onClick={handleNext} disabled={page === totalPages} className="px-3 py-1 rounded bg-orange-200 text-orange-700 disabled:opacity-50">Next</button>
                 </div>
-              </section>
-            ));
+              )}
+            </>;
           })()
         ) : (
           <div className="text-center text-gray-400 py-12">Loading categories...</div>
